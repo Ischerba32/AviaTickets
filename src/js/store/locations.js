@@ -1,6 +1,6 @@
 import api from "../services/apiService";
 import { formatDate } from "../helpers/date";
-class Locations {
+export class Locations {
   constructor(api, helpers) {
     this.api = api;
     this.countries = null;
@@ -27,13 +27,21 @@ class Locations {
   }
 
   getCityCodeByKey(key) {
+    if(!key) return undefined;
     const city = Object.values(this.cities).find(
       (item) => item.full_name === key
     );
+    console.log(city);
     return city.code;
   }
 
   getCityNameByCode(code) {
+    try{
+      const cityName = this.cities[code].name;
+    }
+    catch{
+      throw new Error("empty or bad code!");
+    }
     return this.cities[code].name;
   }
 
@@ -52,7 +60,15 @@ class Locations {
     }, {});
   }
 
+  // serializeCountries(countries) {
+  //   return countries.reduce((acc, country) => {
+  //     acc[country.code] = country;
+  //     return acc;
+  //   }, {});
+  // }
+
   serializeCountries(countries) {
+    if(!Array.isArray(countries) || !countries.length) return {};
     return countries.reduce((acc, country) => {
       acc[country.code] = country;
       return acc;
@@ -82,8 +98,10 @@ class Locations {
   }
 
   async fetchTickets(params) {
+    if(!params) return undefined;
     const response = await this.api.prices(params);
     this.lastSearch = this.serializeTickets(response.data);
+    console.log(this.lastSearch);
   }
 
   // getAirlineList(lastSearch){
@@ -93,17 +111,22 @@ class Locations {
   //   },{});
   // }
   serializeTickets(tickets) {
-    return Object.values(tickets).map((ticket) => {
-      return {
-        ...ticket,
-        origin_name: this.getCityNameByCode(ticket.origin),
-        destination_name: this.getCityNameByCode(ticket.destination),
-        airline_logo: this.getAirLineLogoByCode(ticket.airline),
-        airline_name: this.getAirlineNameByCode(ticket.airline),
-        departure_at: this.formatDate(ticket.departure_at, "dd MMM yyyy hh:mm"),
-        return_at: this.formatDate(ticket.return_at, "dd MMM yyyy hh:mm"),
-      };
-    });
+    try {
+      return Object.values(tickets).map((ticket) => {
+        return {
+          ...ticket,
+          origin_name: this.getCityNameByCode(ticket.origin),
+          destination_name: this.getCityNameByCode(ticket.destination),
+          airline_logo: this.getAirLineLogoByCode(ticket.airline),
+          airline_name: this.getAirlineNameByCode(ticket.airline),
+          departure_at: this.formatDate(ticket.departure_at, "dd MMM yyyy hh:mm"),
+          return_at: this.formatDate(ticket.return_at, "dd MMM yyyy hh:mm"),
+        };
+      });
+    } catch (error) {
+      throw new Error("error!");
+    }
+    //return serializedTickets;
   }
 }
 

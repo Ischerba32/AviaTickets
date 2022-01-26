@@ -38,46 +38,46 @@ import ticketsUI from "./views/tickets";
 // }];
 document.addEventListener("DOMContentLoaded", (e) => {
   const form = formUI.form;
-  
-  const objOfAirlines = testTickets.reduce((acc, item) => {
-    acc[item.airline_name] = item;
-    return acc;
-  }, {});
-  const arrOfAirlines = Object.keys(objOfAirlines);
-  const buffer = document.querySelector(".tickets-section .filter");
-  buffer.innerHTML = " ";
-  arrOfAirlines.forEach((item) => {
-    buffer.insertAdjacentHTML(
-      "afterbegin",
-      `
-    <p>
-    <label>
-    <input type="checkbox" checked="checked" value="${item}" />
-    <span>${item}</span>
-    </label>
-    </p>
-    `
-    );
-  });
-  const inputs = document.querySelectorAll(".filter input");
-  inputs.forEach((input) => {
-    input.addEventListener("click", () => {
-      //очистить контейнер или поля для авиакомпаний
-      let arrayTemp = [];
-      let inputsChecked = document.querySelectorAll("input:checked");
-      inputsChecked.forEach((inputCheck) => {
-        let airFiltered = testTickets.filter(
-          (item) => item.airline_name == `${inputCheck.value}`
-        );
 
-        arrayTemp = arrayTemp.concat(airFiltered);
-      });
-      arrayTemp.sort((prev, next) =>
-        prev.departure_at > next.departure_at ? 1 : -1
-      );
-      ticketsUI.renderTickets(arrayTemp);
-    });
-  });
+  // const objOfAirlines = testTickets.reduce((acc, item) => {
+  //   acc[item.airline_name] = item;
+  //   return acc;
+  // }, {});
+  // const arrOfAirlines = Object.keys(objOfAirlines);
+  // const buffer = document.querySelector(".tickets-section .filter");
+  // buffer.innerHTML = " ";
+  // arrOfAirlines.forEach((item) => {
+  //   buffer.insertAdjacentHTML(
+  //     "afterbegin",
+  //     `
+  //   <p>
+  //   <label>
+  //   <input type="checkbox" checked="checked" value="${item}" />
+  //   <span>${item}</span>
+  //   </label>
+  //   </p>
+  //   `
+  //   );
+  // });
+  // const inputs = document.querySelectorAll(".filter input");
+  // inputs.forEach((input) => {
+  //   input.addEventListener("click", () => {
+  //     //очистить контейнер или поля для авиакомпаний
+  //     let arrayTemp = [];
+  //     let inputsChecked = document.querySelectorAll("input:checked");
+  //     inputsChecked.forEach((inputCheck) => {
+  //       let airFiltered = testTickets.filter(
+  //         (item) => item.airline_name == `${inputCheck.value}`
+  //       );
+
+  //       arrayTemp = arrayTemp.concat(airFiltered);
+  //     });
+  //     arrayTemp.sort((prev, next) =>
+  //       prev.departure_at > next.departure_at ? 1 : -1
+  //     );
+  //     ticketsUI.renderTickets(arrayTemp);
+  //   });
+  // });
 
 
   // Events
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         currency,
       });
       ticketsUI.renderTickets(locations.lastSearch);
-      
+
       console.log(locations.lastSearch);
 
       const objOfAirlines = locations.lastSearch.reduce((acc, item) => {

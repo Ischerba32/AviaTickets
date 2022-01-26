@@ -23,6 +23,10 @@
   margin-right: auto;
 }
 
+body {
+  background-color: #e7e6e6;
+}
+
 /* Header styles */
 .header .brand-logo {
   position: static;
